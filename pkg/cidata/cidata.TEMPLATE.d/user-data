@@ -36,6 +36,11 @@ mounts:
 timezone: {{.TimeZone}}
 {{- end }}
 
+{{- if eq .OS "Linux" }}
+groups:
+  - systemd-journal
+{{- end }}
+
 users:
   - name: "{{.User}}"
 {{- if eq .OS "FreeBSD" }}
@@ -49,6 +54,10 @@ users:
 {{- end }}
     homedir: "{{.Home}}"
     shell: {{.Shell}}
+{{- if eq .OS "Linux" }}
+    groups:
+      - systemd-journal
+{{- end }}
 {{- if eq .OS "Darwin" }}
     {{/* On macOS, the password is not locked so as to allow GUI login. */}}
     {{/* Since the user can run sudo with their own password, basically we don't need to set up passwordless sudo. */}}
